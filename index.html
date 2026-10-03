@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="오늘에 집중하는 월간 캘린더와 날짜별 할 일 목록">
+  <title>하루의 여백 · Monthly Planner</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%230075de'/%3E%3Cpath d='m10 21 7 7 14-16' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css"><script src="script.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">✓</span> 하루의 여백</a><span class="top-note">MY PERSONAL PLANNER</span><span class="local-badge">나만의 공간</span></header>
+  <main>
+    <div class="workspace">
+      <section class="calendar-panel" aria-label="월간 캘린더">
+        <div class="calendar-toolbar"><div><p class="eyebrow">MONTHLY PLAN</p><h2 id="month-title" aria-live="polite"></h2></div><div class="month-controls"><button id="prev" aria-label="이전 달">‹</button><button id="today-button">오늘</button><button id="next" aria-label="다음 달">›</button></div></div>
+        <div class="calendar-legend"><span><i class="week-swatch"></i>이번 주</span><span><i class="today-swatch"></i>오늘</span><span class="select-hint">날짜를 눌러 할 일을 확인하세요</span></div>
+        <div class="weekdays" aria-hidden="true"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span></div>
+        <div id="calendar" class="calendar-grid"></div>
+        <div class="calendar-footer"><span id="week-label"></span><span>조금씩, 꾸준히.</span></div>
+      </section>
+      <div class="right-column"><aside class="todo-panel" aria-labelledby="todo-title"><div class="todo-header"><p class="eyebrow">ONE THING AT A TIME</p><h2 id="todo-title">To-do list <span class="tiny-star" aria-hidden="true">✦</span></h2><p id="selected-date"></p></div><div class="progress-caption"><span>오늘의 작은 성취</span><strong id="progress-text" aria-live="polite">0 / 0</strong></div><progress id="progress" max="1" value="0" aria-label="선택한 날짜의 할 일 완료율"></progress>
+        <form id="todo-form"><label class="sr-only" for="todo-input">새로운 할 일</label><input id="todo-input" maxlength="200" placeholder="새로운 할 일을 적어보세요" autocomplete="off" required><button type="submit" aria-label="할 일 추가">＋</button><div class="time-fields"><label>시작 시간<input id="todo-start-time" type="time"></label><label>종료 시간<input id="todo-end-time" type="time"></label></div><p class="form-error" id="todo-error" role="alert"></p></form>
+        <details class="repeat-settings"><summary>요일별 반복 할 일 만들기</summary><form id="repeat-form"><label for="repeat-input">반복할 일</label><input id="repeat-input" maxlength="200" placeholder="예: 운동하기" required><fieldset class="weekday-picks"><legend>반복 요일 (여러 개 선택)</legend><label><input type="checkbox" name="repeat-days" value="1" checked>월</label><label><input type="checkbox" name="repeat-days" value="2">화</label><label><input type="checkbox" name="repeat-days" value="3">수</label><label><input type="checkbox" name="repeat-days" value="4">목</label><label><input type="checkbox" name="repeat-days" value="5">금</label><label><input type="checkbox" name="repeat-days" value="6">토</label><label><input type="checkbox" name="repeat-days" value="0">일</label></fieldset><label>종료일 (비워두면 계속 반복)<input id="repeat-end" type="date"></label><div class="time-fields"><label>시작 시간<input id="repeat-start-time" type="time"></label><label>종료 시간<input id="repeat-end-time" type="time"></label></div><p class="field-help">선택한 날짜부터 반복합니다. 완료 체크는 날짜별로 저장됩니다.</p><p id="repeat-error" class="form-error" role="alert"></p><button class="primary-button" type="submit">반복 할 일 추가</button></form><ul id="repeat-list" class="simple-list"></ul></details><ul id="todo-list"></ul><div id="empty-state"><span aria-hidden="true">☑</span><p>아직 비어 있는 하루</p><small>가장 먼저 하고 싶은 일을 적어보세요.</small></div><p id="storage-status" class="storage-status" role="status">이 브라우저에 자동 저장됩니다.</p>
+      </aside><section class="date-panel" aria-labelledby="date-title"><h2 id="date-title">이 날은 어떤 날?</h2><p id="note-date" class="panel-caption"></p><p class="field-help">생일, 기념일, 휴가처럼 기억하고 싶은 날을 표시하세요.</p><form id="note-form"><label class="sr-only" for="note-input">날짜 표시 내용</label><input id="note-input" maxlength="80" placeholder="예: 엄마 생신, 여름휴가" required><div class="time-fields"><label>시작일<input id="note-start" type="date" required></label><label>종료일<input id="note-end" type="date" required></label></div><p id="note-error" class="form-error" role="alert"></p><button type="submit" class="primary-button">날짜 표시 추가</button></form><ul id="note-list" class="simple-list"></ul><p id="note-empty" class="field-help">등록한 날짜 표시가 없습니다.</p></section></div>
+    </div><footer class="page-footer"><span>계획에는 여유를, 하루에는 의미를.</span><span>하루의 여백 © <span id="year"></span></span></footer>
+  </main>
+  <dialog id="editor" aria-labelledby="editor-title"><form id="edit-form">
+    <h2 id="editor-title">수정</h2><label>내용<input id="edit-text" maxlength="200" required></label>
+    <div id="edit-times" class="time-fields"><label>시작 시간<input id="edit-start-time" type="time"></label><label>종료 시간<input id="edit-end-time" type="time"></label></div>
+    <div id="edit-dates" class="time-fields"><label>시작일<input id="edit-start" type="date"></label><label>종료일<input id="edit-end" type="date"></label></div>
+    <div id="edit-repeat"><label>적용 범위<select id="edit-scope"><option value="once">이번 날짜만 변경</option><option value="future">이 날짜부터 모두 변경</option></select></label><p id="edit-anchor" class="field-help"></p>
+    <div id="edit-rule-options"><fieldset class="weekday-picks"><legend>반복 요일 (여러 개 선택)</legend><label><input type="checkbox" name="edit-days" value="1">월</label><label><input type="checkbox" name="edit-days" value="2">화</label><label><input type="checkbox" name="edit-days" value="3">수</label><label><input type="checkbox" name="edit-days" value="4">목</label><label><input type="checkbox" name="edit-days" value="5">금</label><label><input type="checkbox" name="edit-days" value="6">토</label><label><input type="checkbox" name="edit-days" value="0">일</label></fieldset><label>반복 종료일 (선택)<input id="edit-until" type="date"></label></div></div>
+    <p id="edit-error" class="form-error" role="alert"></p><div class="dialog-actions"><button id="edit-cancel" type="button">취소</button><button type="submit" class="primary-button">저장</button></div>
+  </form></dialog>
+</body>
+</html>
